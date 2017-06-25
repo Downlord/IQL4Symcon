@@ -248,7 +248,8 @@ class IQL4SmartHome extends IPSModule {
     private function DeviceControl(array $data) {
 
         $payload = new stdClass;
-	IPS_Logmessage("Alexa",$payload);
+        $this->SendDebug("IQL4SmartHomePayload",print_r($payload,true),0);
+
         $headerName = str_replace("Request","Confirmation",$data['header']['name']);
         $sourceID = $data['payload']['appliance']['applianceId'];
         if(IPS_GetObject($data['payload']['appliance']['applianceId'])['ObjectType'] == 6) {
