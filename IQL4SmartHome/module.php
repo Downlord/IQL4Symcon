@@ -139,10 +139,10 @@ class IQL4SmartHome extends IPSModule {
 
         $childrenIDs = array();
         //$childrenIDs = $this->GetChildrenIDsRecursive($this->InstanceID);
-        foreach($devVariables as $d) {
+        foreach((array)$devVariables as $d) {
             $childrenIDs[] = $d['DeviceID'];
         }
-        foreach($devScripts as $s) {
+        foreach((array)$devScripts as $s) {
             $childrenIDs[] = $s['ScriptID'];
         }
 
