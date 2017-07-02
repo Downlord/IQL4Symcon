@@ -357,7 +357,7 @@ class IQL4SmartHome extends IPSModule {
             }elseif($data['header']['name']  == "SetLockStateRequest") {                
                 if(trim($profile['Suffix']) == "%") {
                     if(GetValue($targetID)==0){
-                        $value = $profile['MaxValue'];
+                        $value = $profile['MaxValue']/2;
                         $payload = Array();
                         $payload['lockState']='UNLOCKED';
                         //$payload['debug']='1';
