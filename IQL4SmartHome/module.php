@@ -2,9 +2,12 @@
 class IQL4SmartHome extends IPSModule {
 
     private $switchFunctions = Array("turnOn", "turnOff");
-    private $dimmingFunctions = Array("setPercentage", "incrementPercentage", "decrementPercentage");
+    private $dimmingFunctions = Array("turnOn", "turnOff", "setPercentage", "incrementPercentage", "decrementPercentage");
     private $targetTemperatureFunctions = Array("setTargetTemperature", "incrementTargetTemperature", "decrementTargetTemperature", "getTargetTemperature");
     private $readingTemperatureFunctions = Array("getTemperatureReading");
+    private $ledStripeFunctions = Array("setColor","setColorTemperature","incrementColorTemperature","decrementColorTemperature");
+    private $lockFunctions = Array("SetLockState");
+    private $cameraFunctions = Array("RetrieveCameraStreamUri");
 
     public function Create() {
 
