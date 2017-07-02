@@ -186,7 +186,7 @@ class IQL4SmartHome extends IPSModule {
                 $appliances[] = $appliance;
 
             }
-            $applianceTypes = $this->GetApplianceTypes($profile, $profileAction);                 
+            
         }
 
         return Array(
