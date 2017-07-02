@@ -354,12 +354,26 @@ class IQL4SmartHome extends IPSModule {
                     $payload['previousState']['targetTemperature']['value'] = GetValue($targetID);
                     $payload['previousState']['mode']['value'] = "AUTO";
                 }
-            }elseif($data['header']['name']  == "setLockState") {
+            }elseif($data['header']['name']  == "SetLockStateRequest") {                
                 if(trim($profile['Suffix']) == "%") {
-                    $value = $profile['MaxValue'];
+                    if(GetValue($targetID)==0){
+                        $value = $profile['MinValue'];
+                        $data['payload']['lockState']='LOCKED';
+                    }else{
+                        $value = $profile['MaxValue'];
+                        $data['payload']['lockState']='UNLOCKED';
+                    }                    
                 } else {
-                    $value = true;
+                    if(GetValue($targetID)==0){
+                        $value = true;
+                        $data['payload']['lockState']='LOCKED';
+                    }else{
+                        $value = false;
+                        $data['payload']['lockState']='UNLOCKED';
+                    }                    
                 }
+            }elseif($data['header']['name']  == "GetLockStateRequest") {
+                $data['payload']['lockState']=(GetValue($targetID)==0)?'LOCKED':'UNLOCKED';
             }
 
             if(!isset($value)) {
