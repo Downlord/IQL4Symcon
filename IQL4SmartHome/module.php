@@ -134,7 +134,7 @@ class IQL4SmartHome extends IPSModule {
             'friendlyDescription' => $friendlyDescription,
             'isReachable' => true,
             'actions' => Array(),
-            'applianceTypes' => Array()
+            'applianceTypes' => $applianceType
         );
 
     }
