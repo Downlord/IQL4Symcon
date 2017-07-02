@@ -452,7 +452,7 @@ class IQL4SmartHome extends IPSModule {
     protected function ProcessOAuthData() {
         $jsonRequest = file_get_contents('php://input');
         $data = json_decode($jsonRequest,true);
-        $this->SendDebug("IQL4SmartHomeRequest",print_r($data,true),0);
+        $this->SendDebug("IQL4SmartHomeRequest",json_encode($data),0);
 
         if($data['header']['namespace'] == "Alexa.ConnectedHome.Discovery") {
             ob_start();
@@ -462,7 +462,7 @@ class IQL4SmartHome extends IPSModule {
                 $this->SendDebug("IQL4SmartHomeError", $error, 0);
             }
             ob_end_clean();
-            $this->SendDebug("IQL4SmartHomeResult",print_r($result,true),0);
+            $this->SendDebug("IQL4SmartHomeResult",json_encode($result),0);
             echo json_encode($result);
         }
         elseif($data['header']['namespace'] == "Alexa.ConnectedHome.Control") {
@@ -473,7 +473,7 @@ class IQL4SmartHome extends IPSModule {
                 $this->SendDebug("IQL4SmartHomeError", $error, 0);
             }
             ob_end_clean();
-            $this->SendDebug("IQL4SmartHomeResult",print_r($result,true),0);
+            $this->SendDebug("IQL4SmartHomeResult",json_encode($result),0);
             echo json_encode($result);
         }
         elseif($data['header']['namespace'] == "Alexa.ConnectedHome.Query") {
@@ -484,7 +484,7 @@ class IQL4SmartHome extends IPSModule {
                 $this->SendDebug("IQL4SmartHomeError", $error, 0);
             }
             ob_end_clean();
-            $this->SendDebug("IQL4SmartHomeResult",print_r($result,true),0);
+            $this->SendDebug("IQL4SmartHomeResult",json_encode($result),0);
             echo json_encode($result);
         }
     }
