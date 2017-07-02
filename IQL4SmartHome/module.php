@@ -6,7 +6,7 @@ class IQL4SmartHome extends IPSModule {
     private $targetTemperatureFunctions = Array("setTargetTemperature", "incrementTargetTemperature", "decrementTargetTemperature", "getTargetTemperature");
     private $readingTemperatureFunctions = Array("getTemperatureReading");
     private $ledStripeFunctions = Array("setColor","setColorTemperature","incrementColorTemperature","decrementColorTemperature");
-    private $lockFunctions = Array("GetLockState","SetLockState");
+    private $lockFunctions = Array("getLockState","setLockState");
     private $cameraFunctions = Array("RetrieveCameraStreamUri");
 
     public function Create() {
@@ -28,7 +28,6 @@ class IQL4SmartHome extends IPSModule {
         $this->RegisterOAuth("amazon_smarthome");
 
     }
-
     private function GetActionsForProfile($profile, $profileAction) {
 
         if(($profile['ProfileType'] < 0) or ($profile['ProfileType'] >= 3)) {
@@ -42,7 +41,7 @@ class IQL4SmartHome extends IPSModule {
 
         //Support percent suffix
         if(trim($profile['Suffix']) == "%") {
-            return array_merge($this->switchFunctions, $this->dimmingFunctions);
+            return array_merge($this->lockFunctions, $this->switchFunctions, $this->dimmingFunctions);
         }
 
         //Support temperature suffix
@@ -83,6 +82,7 @@ class IQL4SmartHome extends IPSModule {
         $moduleName = "Generic Device";
         $moduleVendor = "Symcon";
         $friendlyName = $moduleName;
+        $applianceType = Array("");
         $friendlyDescription = "No further description";
 
         $o = IPS_GetObject($objectID);
@@ -116,6 +116,15 @@ class IQL4SmartHome extends IPSModule {
             $deviceID = $targetID;
         }
 
+        if(preg_match("/lampe/",$friendlyName)) {
+            $applianceType=Array("LIGHT");
+        }elseif($friendlyName == "Szene") {
+            $applianceType=Array("SCENE_TRIGGER");
+        }else {
+            $applianceType=Array("SWITCH");
+        }
+        
+
         return Array(
             'applianceId' => $deviceID,
             'manufacturerName' => $moduleVendor,
@@ -124,7 +133,8 @@ class IQL4SmartHome extends IPSModule {
             'version' => IPS_GetKernelVersion(),
             'friendlyDescription' => $friendlyDescription,
             'isReachable' => true,
-            'actions' => Array()
+            'actions' => Array(),
+            'applianceTypes' => Array()
         );
 
     }
@@ -176,6 +186,7 @@ class IQL4SmartHome extends IPSModule {
                 $appliances[] = $appliance;
 
             }
+            $applianceTypes = $this->GetApplianceTypes($profile, $profileAction);                 
         }
 
         return Array(
@@ -342,6 +353,12 @@ class IQL4SmartHome extends IPSModule {
                     $payload['temperatureMode']['value'] = "AUTO";
                     $payload['previousState']['targetTemperature']['value'] = GetValue($targetID);
                     $payload['previousState']['mode']['value'] = "AUTO";
+                }
+            }elseif($data['header']['name']  == "setLockState") {
+                if(trim($profile['Suffix']) == "%") {
+                    $value = $profile['MaxValue'];
+                } else {
+                    $value = true;
                 }
             }
 
